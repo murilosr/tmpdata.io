@@ -17,6 +17,7 @@ defmodule TmpDataIOWeb.Router do
   scope "/", TmpDataIOWeb do
     pipe_through :browser
 
+    post "/__file_upload__", EditPageController, :upload_file
     get "/:page_id", EditPageController, :index
 
     get "/", PageController, :index
