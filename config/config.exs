@@ -18,7 +18,9 @@ config :tmpdata_io, TmpDataIOWeb.Endpoint,
   pubsub_server: TmpDataIO.PubSub,
   live_view: [signing_salt: "CLJOrvT+"]
 
-config :tailwind, version: "3.2.4", default: [
+config :tailwind,
+  version: "3.2.4",
+  default: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

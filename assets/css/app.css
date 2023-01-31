@@ -3,6 +3,9 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+body {
+  font-family: 'Rubik', sans-serif;
+}
 
 /* Alerts and form errors used by phx.new */
 .alert {
