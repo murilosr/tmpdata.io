@@ -17,4 +17,10 @@ defmodule TmpDataIO.TextData do
     |> validate_required([:page, :ttl])
     |> unique_constraint(:page)
   end
+
+  def get_lazy_reference(page_id) do
+    %TmpDataIO.TextData{page: page_id}
+    |> Ecto.put_meta(state: :loaded)
+  end
+
 end
