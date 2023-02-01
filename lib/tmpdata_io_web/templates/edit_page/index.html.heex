@@ -16,7 +16,8 @@
         <h3 class="text-2xl mb-4 font-bold">
             Files:
         </h3>
-        <%= file_input f, :name, class: "mb-2" %>
+        <%= file_input f, :upload_file, class: "mb-2" %>
+        <%= hidden_input f, :page, value: @page_id %>
         <%= submit "Send", class: "bg-blue-500 px-4 rounded text-white font-bold" %>
     <% end %>
 
