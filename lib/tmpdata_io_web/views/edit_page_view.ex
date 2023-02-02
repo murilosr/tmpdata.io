@@ -2,7 +2,7 @@ defmodule TmpDataIOWeb.EditPageView do
   use TmpDataIOWeb, :view
 
   def last_update_value(last_update) do
-    "#{Time.diff(DateTime.utc_now(), last_update, :second)} seconds ago"
+    "#{NaiveDateTime.diff(DateTime.utc_now(), last_update, :second)} seconds ago"
   end
 
   def last_update(assigns) do
