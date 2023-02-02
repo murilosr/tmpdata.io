@@ -15,11 +15,14 @@ defmodule TmpDataIOWeb.EditPageController do
   def index(conn, %{"page_id" => page_id}) do
     text_data =
       case Repo.one(from td in TextData, where: td.page == ^page_id) do
-        nil -> %TextData{page: page_id}
+        nil -> %TextData{page: page_id, content: ""}
         row -> row
       end
 
-    render(conn, "index.html", page_id: page_id, text_data: text_data, files: conn)
+      text_data = Repo.preload(text_data, [:files])
+      IO.inspect(text_data.files)
+
+    render(conn, "index.html", page_id: page_id, text_data: text_data, conn: conn)
   end
 
   def upload_file(conn, %{"page" => page_id, "upload_file" => upload_file}) do
