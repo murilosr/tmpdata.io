@@ -16,7 +16,12 @@ config :tmpdata_io, TmpDataIOWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: TmpDataIOWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: TmpDataIO.PubSub,
-  live_view: [signing_salt: "CLJOrvT+"]
+  live_view: [signing_salt: "CLJOrvT+"],
+  http: [
+    protocol_options: [
+      idle_timeout: 300_000
+    ]
+  ]
 
 config :tailwind,
   version: "3.2.4",
@@ -53,8 +58,8 @@ config :esbuild,
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  metadata: [:mfa, :line],
+  format: "[$date $time][$level][$metadata]\n$message\n\n"
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason

@@ -7,6 +7,8 @@ defmodule TmpDataIO.TextData do
     field :content, :string
     field :ttl, :integer, default: 3600
 
+    has_many :files, TmpDataIO.FileCatalog, foreign_key: :page_id, on_delete: :delete_all, on_replace: :delete
+
     timestamps()
   end
 

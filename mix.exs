@@ -49,6 +49,7 @@ defmodule TmpDataIO.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
+      {:briefly, "~> 0.4.0"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev}
     ]
   end

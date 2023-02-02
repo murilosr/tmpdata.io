@@ -13,7 +13,7 @@ defmodule TmpDataIO.Repo.Migrations.CreateFile do
     end
 
     create table(:file_contents, primary_key: false) do
-      add :file_id, :uuid, [references(:files), primary_key: true]
+      add :file_id, :uuid, [references(:files), primary_key: true, on_delete: :delete_all]
       add :chunk_order, :integer, primary_key: true
       add :payload, :binary
     end
