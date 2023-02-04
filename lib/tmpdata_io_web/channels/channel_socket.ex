@@ -4,10 +4,6 @@ defmodule TmpDataIOWeb.ChannelSocket do
 
   channel "text_data:*", TextDataChannel
 
-  def connect(socket) do
-    {:ok, socket}
-  end
-
   def connect(_param, socket, _connect_info) do
     IO.inspect(socket)
     {:ok, socket}
