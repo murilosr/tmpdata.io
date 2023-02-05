@@ -51,13 +51,18 @@ let socket = new Socket("/socket", { params: { _csrf_token: csrfToken, page_id: 
 socket.connect()
 window.socket = socket;
 
+const updateLastTimeComponent = () => {
+    document.querySelector("#last_update_timediff").innerHTML = `${window.lastUpdateTotalSeconds} seconds ago`;
+    document.querySelector("#last_update_timediff").parentElement.classList = [];
+}
+
 const registerUpdateLastTimeInterval = () => {
     if(window.currentInterval !== undefined){
         clearInterval(window.currentInterval);
     }
     window.currentInterval = setInterval(() => {
         window.lastUpdateTotalSeconds += 1;
-        document.querySelector("#last_update_timediff").innerHTML = `${window.lastUpdateTotalSeconds} seconds ago`;
+        updateLastTimeComponent();
     }, 1000.0);
 
     console.log(window.currentInterval, window.lastUpdateTotalSeconds);
@@ -65,7 +70,7 @@ const registerUpdateLastTimeInterval = () => {
 
 const updateTimeDiff = () => {
     window.lastUpdateTotalSeconds = 0;
-    document.querySelector("#last_update_timediff").innerHTML = `now`;
+    updateLastTimeComponent();
     registerUpdateLastTimeInterval();
 }
 
