@@ -1,8 +1,8 @@
 defmodule TmpDataIOWeb.EditPageView do
   use TmpDataIOWeb, :view
 
-  def last_update_value(last_update) do
-    "#{NaiveDateTime.diff(DateTime.utc_now(), last_update, :second)} seconds ago"
+  def time_diff(text_data) do
+    NaiveDateTime.diff(DateTime.utc_now(), text_data.updated_at, :second)
   end
 
   def last_update(assigns) do
@@ -10,11 +10,11 @@ defmodule TmpDataIOWeb.EditPageView do
       nil ->
         ~H""
 
-      updated_at ->
+      _ ->
         ~H"""
         <div>
           <label for="last_update_timediff" class="font-bold">Last update: </label>
-          <span id="last_update_timediff"><%= last_update_value(updated_at) %></span>
+          <span id="last_update_timediff"><%= time_diff(assigns.text_data) %> seconds ago</span>
         </div>
         """
     end

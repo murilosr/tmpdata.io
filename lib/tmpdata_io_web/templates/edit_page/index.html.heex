@@ -27,7 +27,7 @@
         <%= hidden_input f, :page, value: @page_id %>
         <%= submit "Send", class: "bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-bold" %>
     <% end %>
-    
+
         <%= if Enum.empty? @text_data.files do %>
             <ul class="border rounded-lg">
                 <li class="text-center p-4">
@@ -56,6 +56,8 @@
 </div>
 
 <script>
+
+    window.lastUpdateTotalSeconds = <%= time_diff(@text_data) %>;
 
     async function fileDeleteRequest(fileId){
         const url = `<%= Routes.file_api_path(@conn, :delete, "FILE_ID") %>`.replace("FILE_ID", fileId);
