@@ -1,0 +1,4 @@
+version: '2.4'
+services:
+  tmpdata_io:
+    image: docker.tmpdata.io/tmpdata_io
