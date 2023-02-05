@@ -14,6 +14,7 @@ defmodule TmpDataIO.Application do
       TmpDataIOWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: TmpDataIO.PubSub},
+      TmpDataIO.Presence,
       # Start the Endpoint (http/https)
       TmpDataIOWeb.Endpoint
       # Start a worker by calling: TmpDataIO.Worker.start_link(arg)

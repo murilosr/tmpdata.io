@@ -4,7 +4,12 @@
     <h3 class="text-2xl mb-4">
         <strong>Page:</strong> <%= @page_id %>
     </h3>
-    <.last_update text_data={@text_data} />
+    <div class="flex w-full justify-between">
+        <.last_update text_data={@text_data} />
+        <div>
+            <span class="text-green-600">●</span><span id="online_counter" class="text-slate-500"></span>
+        </div>
+    </div>
     <textarea
         id="text_data"
         class=" border border-black/25 rounded-lg mb-8
@@ -22,8 +27,6 @@
         <%= hidden_input f, :page, value: @page_id %>
         <%= submit "Send", class: "bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-bold" %>
     <% end %>
-
-    
 
         <%= if Enum.empty? @text_data.files do %>
             <ul class="border rounded-lg">
@@ -53,6 +56,8 @@
 </div>
 
 <script>
+
+    window.lastUpdateTotalSeconds = <%= time_diff(@text_data) %>;
 
     async function fileDeleteRequest(fileId){
         const url = `<%= Routes.file_api_path(@conn, :delete, "FILE_ID") %>`.replace("FILE_ID", fileId);

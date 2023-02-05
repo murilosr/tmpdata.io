@@ -49,8 +49,25 @@ if(result != null){
 
 let socket = new Socket("/socket", { params: { _csrf_token: csrfToken, page_id: pageId } })
 socket.connect()
-
 window.socket = socket;
+
+const registerUpdateLastTimeInterval = () => {
+    if(window.currentInterval !== undefined){
+        clearInterval(window.currentInterval);
+    }
+    window.currentInterval = setInterval(() => {
+        window.lastUpdateTotalSeconds += 1;
+        document.querySelector("#last_update_timediff").innerHTML = `${window.lastUpdateTotalSeconds} seconds ago`;
+    }, 1000.0);
+
+    console.log(window.currentInterval, window.lastUpdateTotalSeconds);
+}
+
+const updateTimeDiff = () => {
+    window.lastUpdateTotalSeconds = 0;
+    document.querySelector("#last_update_timediff").innerHTML = `now`;
+    registerUpdateLastTimeInterval();
+}
 
 const channelId = `text_data:${pageId}`;
 let channel = socket.channel(channelId)
@@ -59,8 +76,19 @@ channel.join()
     .receive("error", resp => { console.log("Unable to join", resp) });
 
 channel.on("update", (message) => {
-    console.log(`[socket@text_data:murilo/update -- RECV: ${message}`);
+    console.log(`[socket@text_data:${pageId}/update -- RECV: ${message}`);
     document.querySelector("#text_data").value = message.value;
+    updateTimeDiff();
+})
+
+channel.on(`number_online`, (message) => {
+    console.log(`[socket@text_data:${pageId}/number_online -- RECV: ${JSON.stringify(message)}`);
+    if(message.number_online == 1){
+        document.querySelector("#online_counter").innerHTML = " Just you"
+
+    }else{
+        document.querySelector("#online_counter").innerHTML = message.number_online;
+    }
 })
 
 // expose liveSocket on window for web console debug logs and latency simulation:
@@ -80,13 +108,20 @@ function debounceTextDataInput(func, millis = 500) {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    registerUpdateLastTimeInterval();
+
     const textDataInputDOM = document.querySelector("#text_data");
     textDataInputDOM ? textDataInputDOM.addEventListener("input", (event) => {
         debounceTextDataInput((newValue) => {
             const payload = {value: newValue};
             console.log(`[socket@text_data:murilo/change -- PUSH: ${JSON.stringify(payload)}`);
-            channel.push("change", payload)
+            channel.push("change", payload);
+            updateTimeDiff();
         }, 200)(event.currentTarget.value);
     }):"";
+
+    window.addEventListener("beforeunload", () => {
+        channel.leave();
+    })
 
 });
