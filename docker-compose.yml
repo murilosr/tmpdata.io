@@ -1,4 +1,15 @@
 version: '2.4'
 services:
   tmpdata_io:
-    image: docker.tmpdata.io/tmpdata_io
+    image: docker.tmpdata.io/tmpdata_io:latest
+    container_name: tmpdata_io
+    networks:
+      - webserver
+    environment:
+      - ENV=prod
+      - DATABASE_URL=<CHANGE_HERE>
+      - SECRET_KEY_BASE=<CHANGE_HERE>
+
+networks:
+  webserver:
+    name: webserver
