@@ -12,7 +12,10 @@ defmodule TmpDataIOWeb.EditPageView do
 
       updated_at ->
         ~H"""
-        <span><strong>Last update: </strong><%= last_update_value(updated_at) %></span>
+        <div>
+          <label for="last_update_timediff" class="font-bold">Last update: </label>
+          <span id="last_update_timediff"><%= last_update_value(updated_at) %></span>
+        </div>
         """
     end
   end

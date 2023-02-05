@@ -5,13 +5,11 @@ defmodule TmpDataIOWeb.ChannelSocket do
   channel "text_data:*", TextDataChannel
 
   def connect(_param, socket, _connect_info) do
-    IO.inspect(socket)
     {:ok, socket}
   end
 
   def id(_socket) do
-    uid = Ecto.UUID.generate()
-    IO.inspect(uid)
-    "channel_socket:#{uid}"
+    to_string(Ecto.UUID.generate())
   end
+
 end

@@ -59,8 +59,18 @@ channel.join()
     .receive("error", resp => { console.log("Unable to join", resp) });
 
 channel.on("update", (message) => {
-    console.log(`[socket@text_data:murilo/update -- RECV: ${message}`);
+    console.log(`[socket@text_data:${pageId}/update -- RECV: ${message}`);
     document.querySelector("#text_data").value = message.value;
+})
+
+channel.on(`number_online`, (message) => {
+    console.log(`[socket@text_data:${pageId}/number_online -- RECV: ${JSON.stringify(message)}`);
+    if(message.number_online == 1){
+        document.querySelector("#online_counter").innerHTML = " Just you"
+
+    }else{
+        document.querySelector("#online_counter").innerHTML = message.number_online;
+    }
 })
 
 // expose liveSocket on window for web console debug logs and latency simulation:
@@ -88,5 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
             channel.push("change", payload)
         }, 200)(event.currentTarget.value);
     }):"";
+
+    window.addEventListener("beforeunload", () => {
+        channel.leave();
+    })
 
 });
