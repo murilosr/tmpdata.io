@@ -21,7 +21,7 @@ defmodule TmpDataIOWeb.Router do
     post "/__file_upload__", EditPageController, :upload_file
     get "/:page_id", EditPageController, :index
 
-    get "/", PageController, :index
+    get "/", HomepageController, :index
   end
 
   scope "/api", TmpDataIOWeb.Api do
