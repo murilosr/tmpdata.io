@@ -15,4 +15,15 @@ defmodule TmpDataIOWeb.EditPageView do
     </div>
     """
   end
+
+  def get_file_size_text(file_size) do
+    mb = Float.round(file_size / 1.0e6, 2)
+    kb = Float.round(file_size / 1.0e3, 2)
+
+    cond do
+      kb < 0.1 -> "#{file_size} B"
+      mb < 1.0 -> "#{kb} KB"
+      true -> "#{mb} MB"
+    end
+  end
 end
