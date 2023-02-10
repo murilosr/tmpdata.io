@@ -12,9 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
-    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+    <%= raw(GoogleAnalytics.header) %>
   </head>
   <body class="flex flex-col w-screen h-screen items-center justify-center">
     <%= @inner_content %>
+    <%= raw(GoogleAnalytics.script) %>
   </body>
 </html>

@@ -1,4 +1,5 @@
 defmodule TmpDataIOWeb.LayoutView do
+  alias TmpDataIOWeb.UI.GoogleAnalytics
   use TmpDataIOWeb, :view
 
   # Phoenix LiveDashboard is available only in development by default,
