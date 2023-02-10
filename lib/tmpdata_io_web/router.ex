@@ -28,6 +28,7 @@ defmodule TmpDataIOWeb.Router do
     pipe_through :api
 
     delete "/files/:id", FileApi, :delete
+    post "/files", FileApi, :upload
   end
 
   # Other scopes may use custom stacks.

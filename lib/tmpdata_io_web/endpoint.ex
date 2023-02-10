@@ -46,7 +46,7 @@ defmodule TmpDataIOWeb.Endpoint do
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library(),
-    length: 500 * 1024 * 1024
+    length: 512 * 1024 * 1024
 
   plug Plug.MethodOverride
   plug Plug.Head

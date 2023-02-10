@@ -30,6 +30,11 @@ if config_env() == :prod do
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
 
+  if System.get_env("GTAG") != nil do
+    config :tmpdata_io, TmpDataIOWeb.UI.GoogleAnalytics,
+    tag_id: System.get_env("GTAG")
+  end
+
   config :tmpdata_io, TmpDataIO.Repo,
     # ssl: true,
     url: database_url,
