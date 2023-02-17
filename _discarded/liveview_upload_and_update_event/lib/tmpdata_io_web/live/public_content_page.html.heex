@@ -10,23 +10,31 @@
             <span class="text-green-600">●</span><span id="online_counter" class="text-slate-500"></span>
         </div>
     </div>
-    <textarea
-        id="text_data"
-        class=" border border-black/25 rounded-lg mb-8
+    <textarea id="text_data" class="
+                w-full border border-black/25 rounded-lg mb-8
                 hover:ring-1 hover:ring-blue-400 hover:border-blue-400
-                focus:ring-1 focus:ring-blue-700 focus:border-blue-700"
-        rows="5">
-        <%= @text_data.content %></textarea>
+                focus:ring-1 focus:ring-blue-700 focus:border-blue-700
+                "
+            rows="5">
+    <%= @text_data.content %></textarea>
 
     <h3 class="text-2xl mb-4 font-bold">
         Files:
     </h3>
-    <%= form_for @conn, Routes.edit_page_path(@conn, :upload_file), [multipart: true, class: "flex flex-row items-center mb-2", id: "form_upload"], fn f -> %>
-        <label for="form_upload_upload_file" class="bg-white hover:bg-slate-200 px-4 py-2 mr-2 rounded-lg text-black border font-bold hover:cursor-pointer">Select file</label>
-        <%= file_input f, :upload_file, class: "hidden" %>
-        <%= hidden_input f, :page, value: @page_id %>
-        <%= submit "Send", class: "bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-bold" %>
-    <% end %>
+    <form phx-change="validate" phx-submit="save">
+        <label for={@uploads.files.ref} class="bg-white hover:bg-slate-200 px-4 py-2 mr-2 rounded-lg text-black border font-bold hover:cursor-pointer">Select file</label>
+        <%= live_file_input @uploads.files, class: "hidden" %>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-bold">Send</button>
+    </form>
+
+        <%= if Map.has_key?(@upload_entry, :name) do %>
+        <div id="upload_files_info" class="flex flex-col" phx-update="append">
+            <div id={"upload_file_" <> @upload_entry.id} class="flex flex-1 border rounded-md min-h-[1rem] h-1 my-2 overflow-clip -p-1">
+                <span><%= @upload_entry.name %></span>
+                <div class={"flex flex-1 border rounded-md min-h-[1rem] h-1 bg-blue-400"} style={"width: #{@upload_entry.progress}%; max-width: #{@upload_entry.progress}%"} />
+            </div>
+        </div>
+        <% end %>
 
         <%= if Enum.empty? @text_data.files do %>
             <ul class="border rounded-lg">
@@ -56,15 +64,5 @@
 </div>
 
 <script>
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadPublicPageModule(
-        parseInt(`<%= time_diff(@text_data) %>`),
-        {
-            deleteFile: `<%= Routes.file_api_path(@conn, :delete, "FILE_ID") %>`,
-            uploadFile: `<%= Routes.file_api_path(@conn, :upload) %>`,
-            downloadFile: `<%= Routes.edit_page_path(@conn, :download_file, "FILE_ID", "FILE_NAME") %>`
-        });
-});
 
 </script>
