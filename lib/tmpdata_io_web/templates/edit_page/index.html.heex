@@ -57,55 +57,14 @@
 
 <script>
 
-    window.lastUpdateTotalSeconds = <%= time_diff(@text_data) %>;
-
-    async function fileDeleteRequest(fileId){
-        const url = `<%= Routes.file_api_path(@conn, :delete, "FILE_ID") %>`.replace("FILE_ID", fileId);
-        const response = await fetch(url, {
-            method: "delete",
-            headers: {"Content-Type": "application/json"}
+document.addEventListener("DOMContentLoaded", () => {
+    loadPublicPageModule(
+        parseInt(`<%= time_diff(@text_data) %>`),
+        {
+            deleteFile: `<%= Routes.file_api_path(@conn, :delete, "FILE_ID") %>`,
+            uploadFile: `<%= Routes.file_api_path(@conn, :upload) %>`,
+            downloadFile: `<%= Routes.edit_page_path(@conn, :download_file, "FILE_ID", "FILE_NAME") %>`
         });
-        location.reload();
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-
-        document.querySelectorAll(".deleteFile").forEach(el => {
-            el.addEventListener("click", (event) => {
-                event.stopPropagation();
-                const target = event.currentTarget;
-                const fileId = target.parentNode.getAttribute("file-id");
-
-                fileDeleteRequest(fileId);
-            })
-        });
-
-        document.querySelectorAll(".downloadFile").forEach(el => {
-            el.addEventListener("click", (event) => {
-                const target = event.currentTarget;
-                const fileId = target.getAttribute("file-id");
-                const fileName = target.getAttribute("file-name");
-
-                window.open("/__file__/FILE_ID/FILE_NAME".replace("FILE_ID", fileId).replace("FILE_NAME", fileName));
-            })
-        });
-
-        document.querySelector("#form_upload").addEventListener("submit", (event) => {
-            event.preventDefault();
-
-            const url = `<%= Routes.file_api_path(@conn, :upload) %>`;
-            const formData = new FormData(event.target);
-
-            const response = fetch(url, {
-                method: "post",
-                body: formData
-            });
-
-            response.then(resp => {
-                location.reload();
-            })
-        })
-
-    });
+});
 
 </script>
