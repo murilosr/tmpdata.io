@@ -1,4 +1,6 @@
 defmodule TmpDataIOWeb.TextDataChannel do
+  alias TmpDataIOWeb.Endpoint
+  alias TmpDataIOWeb.Api.RenderApi
   alias TmpDataIO.Presence
   alias TmpDataIO.Repo
   alias TmpDataIO.TextData
@@ -6,15 +8,17 @@ defmodule TmpDataIOWeb.TextDataChannel do
   import Ecto.Query
   use TmpDataIOWeb, :channel
 
+  @impl true
   def join("text_data:" <> page_id, _payload, socket) do
     send(self(), {:track_join, page_id})
     {:ok, socket}
   end
 
+  @impl true
   def handle_in("change", %{"value" => text_value}, socket) do
-    Phoenix.Channel.broadcast_from(socket, "update", %{value: text_value})
-
     "text_data:" <> page = socket.topic
+
+    Phoenix.Channel.broadcast_from(socket, "update", %{value: text_value})
 
     case Repo.one(from td in TextData, where: td.page == ^page) do
       nil -> %TextData{page: page}
@@ -26,6 +30,8 @@ defmodule TmpDataIOWeb.TextDataChannel do
     {:noreply, socket}
   end
 
+
+  @impl true
   intercept ["presence_diff"]
   def handle_out("presence_diff", _payload, socket) do
     with "text_data:"<>page_id <- socket.topic do
@@ -34,6 +40,7 @@ defmodule TmpDataIOWeb.TextDataChannel do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_info({:track_join, page_id}, socket) do
     {:ok, _} =
       Presence.track(socket, page_id, %{
@@ -43,5 +50,9 @@ defmodule TmpDataIOWeb.TextDataChannel do
       })
 
     {:noreply, socket}
+  end
+
+  def broadcast_update_file_list_event(page_id) do
+    Endpoint.broadcast("text_data:" <> page_id, "update_file_list", RenderApi.get_payload(page_id))
   end
 end

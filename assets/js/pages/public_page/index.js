@@ -1,6 +1,6 @@
 import { pushTextareaChange } from "./channel";
 import domSelector from "./dom_selectors";
-import { debounceTextDataInput, fileDeleteRequest, registerUpdateLastTimeInterval, updateTimeDiff } from "./helpers";
+import { debounceTextDataInput, fileDeleteRequest, registerFileListEvents, registerUpdateLastTimeInterval, updateTimeDiff } from "./helpers";
 import { getUrls, setLastUpdateTotalSeconds, setUrls } from "./page_data";
 
 /*
@@ -13,26 +13,7 @@ function loadPublicPageModule(_lastUpdateTotalSeconds, _urls) {
     setUrls(_urls);
 
     registerUpdateLastTimeInterval();
-
-    domSelector.deleteFileButtonList().forEach(el => {
-        el.addEventListener("click", (event) => {
-            event.stopPropagation();
-            const target = event.currentTarget;
-            const fileId = target.parentNode.getAttribute("file-id");
-
-            fileDeleteRequest(getUrls().deleteFile, fileId);
-        })
-    });
-
-    domSelector.downloadFileRowList().forEach(el => {
-        el.addEventListener("click", (event) => {
-            const target = event.currentTarget;
-            const fileId = target.getAttribute("file-id");
-            const fileName = target.getAttribute("file-name");
-
-            window.open(getUrls().downloadFile.replace("FILE_ID", fileId).replace("FILE_NAME", fileName));
-        })
-    });
+    registerFileListEvents();
 
     domSelector.uploadForm().addEventListener("submit", (event) => {
         event.preventDefault();
@@ -46,7 +27,7 @@ function loadPublicPageModule(_lastUpdateTotalSeconds, _urls) {
         });
 
         response.then(resp => {
-            location.reload();
+            console.log("uploaded file")
         })
     });
 

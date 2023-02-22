@@ -1,6 +1,6 @@
 import getPage from "../../libs/get_page";
 import domSelector from "./dom_selectors";
-import { getTimerDebounceTextDataInput, setTimerDebounceTextDataInput } from "./page_data";
+import { getTimerDebounceTextDataInput, getUrls, setTimerDebounceTextDataInput } from "./page_data";
 import { getActiveInterval, getLastUpdateTotalSeconds, setActiveInterval, setLastUpdateTotalSeconds } from "./page_data";
 
 const getTopic = () => {
@@ -21,8 +21,6 @@ async function fileDeleteRequest(delete_path, fileId){
         method: "delete",
         headers: {"Content-Type": "application/json"}
     });
-    console.log(response);
-    location.reload();
 }
 
 const updateLastTimeComponent = () => {
@@ -51,11 +49,36 @@ const updateTimeDiff = () => {
     registerUpdateLastTimeInterval();
 }
 
+const registerFileListEvents = () => {
+
+    domSelector.deleteFileButtonList().forEach(el => {
+        el.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const target = event.currentTarget;
+            const fileId = target.parentNode.getAttribute("file-id");
+
+            fileDeleteRequest(getUrls().deleteFile, fileId);
+        })
+    });
+
+    domSelector.downloadFileRowList().forEach(el => {
+        el.addEventListener("click", (event) => {
+            const target = event.currentTarget;
+            const fileId = target.getAttribute("file-id");
+            const fileName = target.getAttribute("file-name");
+
+            window.open(getUrls().downloadFile.replace("FILE_ID", fileId).replace("FILE_NAME", fileName));
+        })
+    });
+
+}
+
 export {
     getTopic,
     fileDeleteRequest,
     debounceTextDataInput,
     updateLastTimeComponent,
     registerUpdateLastTimeInterval,
-    updateTimeDiff
+    updateTimeDiff,
+    registerFileListEvents
 }
