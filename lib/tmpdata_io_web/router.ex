@@ -17,18 +17,18 @@ defmodule TmpDataIOWeb.Router do
   scope "/", TmpDataIOWeb do
     pipe_through :browser
 
-    get "/__file__/:file_id/:file_name", EditPageController, :download_file
-    post "/__file_upload__", EditPageController, :upload_file
     get "/:page_id", EditPageController, :index
-
     get "/", HomepageController, :index
   end
 
-  scope "/api", TmpDataIOWeb.Api do
+  scope "/__api__", TmpDataIOWeb.Api do
     pipe_through :api
 
+    get "/files/:file_id/:file_name", FileApi, :download_file
     delete "/files/:id", FileApi, :delete
     post "/files", FileApi, :upload
+
+    get "/render/file_list/:page_id", RenderApi, :render_file_list
   end
 
   # Other scopes may use custom stacks.

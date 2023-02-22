@@ -22,11 +22,16 @@ const deleteFileButtonList = () => {
     return document.querySelectorAll(".deleteFile");
 }
 
+const fileListRoot = () => {
+    return document.querySelector("#file_list");
+}
+
 export default {
     lastUpdateTimediffSpan,
     textarea,
     onlineCounter,
     uploadForm,
     downloadFileRowList,
-    deleteFileButtonList
+    deleteFileButtonList,
+    fileListRoot
 }

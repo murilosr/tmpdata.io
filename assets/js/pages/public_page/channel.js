@@ -1,5 +1,5 @@
 import { Socket } from "phoenix";
-import { getTopic, updateTimeDiff } from "./helpers";
+import { getTopic, registerFileListEvents, updateTimeDiff } from "./helpers";
 import getPage from "../../libs/get_page";
 import getCsrfToken from "../../libs/get_csrf_token";
 import domSelector from "./dom_selectors";
@@ -25,6 +25,13 @@ channel.on("update", (message) => {
     logChannel("update", JSON.stringify(message));
     domSelector.textarea().value = message.value;
     updateTimeDiff();
+})
+
+channel.on("update_file_list", (message) => {
+    logChannel("update_file_list", "");
+    console.log(message);
+    domSelector.fileListRoot().innerHTML = message.html;
+    registerFileListEvents();
 })
 
 channel.on(`number_online`, (message) => {

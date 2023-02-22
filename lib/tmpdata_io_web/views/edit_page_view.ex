@@ -1,6 +1,8 @@
 defmodule TmpDataIOWeb.EditPageView do
   use TmpDataIOWeb, :view
 
+  alias TmpDataIOWeb.UI.FileList
+
   def time_diff(text_data) do
     if text_data.updated_at == nil,
       do: 0,
@@ -14,16 +16,5 @@ defmodule TmpDataIOWeb.EditPageView do
       <span id="last_update_timediff"><%= time_diff(assigns.text_data) %> seconds ago</span>
     </div>
     """
-  end
-
-  def get_file_size_text(file_size) do
-    mb = Float.round(file_size / 1.0e6, 2)
-    kb = Float.round(file_size / 1.0e3, 2)
-
-    cond do
-      kb < 0.1 -> "#{file_size} B"
-      mb < 1.0 -> "#{kb} KB"
-      true -> "#{mb} MB"
-    end
   end
 end
