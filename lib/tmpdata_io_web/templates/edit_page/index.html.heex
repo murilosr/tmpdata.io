@@ -22,11 +22,19 @@
         Files:
     </h3>
     <%= form_for @conn, Routes.file_api_path(@conn, :upload), [multipart: true, class: "flex flex-row items-center mb-2", id: "form_upload"], fn f -> %>
-        <label for="form_upload_upload_file" class="bg-white hover:bg-slate-200 px-4 py-2 mr-2 rounded-lg text-black border font-bold hover:cursor-pointer">Select file</label>
+        <label
+            for="form_upload_upload_file"
+            class="bg-white hover:bg-slate-200 px-4 py-2 mr-2 rounded-lg text-black border font-bold hover:cursor-pointer"
+        >Upload file</label>
         <%= file_input f, :upload_file, class: "hidden" %>
         <%= hidden_input f, :page, value: @page_id %>
-        <%= submit "Send", class: "bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-bold" %>
+        <%# submit "Send", class: "bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-lg text-white font-bold" %>
     <% end %>
+
+    <div class="hidden my-4">
+        <h4 class="text-lg mb-2 font-bold">Uploading...</h4>
+        <ul id="upload_status" class="border rounded-lg"></ul>
+    </div>
 
     <div id="file_list">
         <FileList.render files={@text_data.files} />

@@ -14,6 +14,10 @@ const uploadForm = () => {
     return document.querySelector("#form_upload");
 }
 
+const uploadFileInput = () => {
+    return uploadForm().querySelector("input[type=file]")
+}
+
 const downloadFileRowList = () => {
     return document.querySelectorAll(".downloadFile");
 }
@@ -26,6 +30,22 @@ const fileListRoot = () => {
     return document.querySelector("#file_list");
 }
 
+const uploadStatusList = () => {
+    return document.querySelector("#upload_status");
+}
+
+const uploadStatusRow = (id) => {
+    return document.querySelector("#upload_status").querySelector(`li[file-idx='${id}']`);
+}
+
+const statusProgressContainer = (id) => {
+    return uploadStatusRow(id).querySelector(".uploadStatus");
+}
+
+const statusProgressBar = (id) => {
+    return statusProgressContainer(id).children[0];
+}
+
 export default {
     lastUpdateTimediffSpan,
     textarea,
@@ -33,5 +53,10 @@ export default {
     uploadForm,
     downloadFileRowList,
     deleteFileButtonList,
-    fileListRoot
+    fileListRoot,
+    uploadFileInput,
+    uploadStatusList,
+    uploadStatusRow,
+    statusProgressContainer,
+    statusProgressBar
 }
