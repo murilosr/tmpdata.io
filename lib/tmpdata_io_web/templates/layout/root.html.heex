@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
+    <meta name="description" content="Share files and edit live texts easily with tmpdata.io">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content={csrf_token_value()}>
@@ -13,6 +14,7 @@
 
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+    <%= raw(GoogleAnalytics.header) %>
   </head>
   <body class="flex flex-col w-screen h-screen">
     <header class="flex w-full space-x-2 justify-center py-4 bg-slate-300 font-bold text-2xl">
@@ -22,5 +24,6 @@
     <footer class="flex w-full bg-slate-300 py-1 justify-center mt-auto">
       <p class="text-gray-500 font-bold space-x-2"><a href="https://github.com/murilosr" target="_blank" class="font-normal">Murilo Rocha</a><span> 🞄 </span><a href="https://github.com/murilosr/tmpdata.io" target="_blank" class="font-normal">Github</a><span> 🞄 </span><span class="font-normal">2023</span></p>
     </footer>
+    <%= raw(GoogleAnalytics.script) %>
   </body>
 </html>

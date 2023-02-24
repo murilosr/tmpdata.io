@@ -24,7 +24,7 @@ defmodule TmpDataIOWeb.Endpoint do
     at: "/",
     from: :tmpdata_io,
     gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: ~w(assets fonts images favicon.ico robots.txt sitemap.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

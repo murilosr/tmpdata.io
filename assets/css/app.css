@@ -125,3 +125,14 @@ body {
   100% { opacity: 0; }
 }
 
+.uploadStatus .complete{
+  position: absolute;
+  top: 0;
+  height: 1rem;
+  background-color: limegreen;
+  transition: width 3s;
+}
+
+li[file-idx] {
+  transition: all 0.6s linear;
+}

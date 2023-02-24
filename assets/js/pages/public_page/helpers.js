@@ -7,6 +7,15 @@ const getTopic = () => {
     return `text_data:${getPage()}`
 }
 
+const getFileSize = (filesize) => {
+    mb = Math.fround(filesize / 1.0e6, 2).toFixed(2);
+    kb = Math.fround(filesize / 1.0e3, 2).toFixed(2);
+
+    if(kb < 1.0) return `${filesize} B`;
+    if(mb < 1.0) return `${kb} KB`;
+    return `${mb} MB`;
+}
+
 function debounceTextDataInput(func, millis = 500) {
     return (...args) => {
         clearTimeout(getTimerDebounceTextDataInput());
@@ -73,12 +82,81 @@ const registerFileListEvents = () => {
 
 }
 
+const registerFileInputEvents = () => {
+
+    domSelector.uploadFileInput().addEventListener("change", () => {
+        domSelector.uploadForm().dispatchEvent(new Event("submit"));
+    });
+
+}
+
+const addUploadStatusRow = (id, filename, filesize) => {
+    domSelector.uploadStatusList().parentElement.classList.remove("hidden");
+
+    const statusRow = document.createElement("li");
+    statusRow.setAttribute("file-idx", id);
+    statusRow.innerHTML = `
+    <div class="flex">
+        <span class="flex-1 mr-4">${filename}</span>
+        <span>${getFileSize(filesize)}</span>
+    </div>
+    <div class="uploadStatus flex-1 h-2 rounded-lg border overflow-clip relative">
+        <div class="h-4 bg-blue-300 rounded-lg" style="width: 50%" />
+    </div>
+    `;
+    statusRow.className = "flex px-4 py-4 flex-col w-full border-b last:border-b-0 break-all"
+
+    domSelector.uploadStatusList().appendChild(statusRow);
+}
+
+const addCompleteStatus = (id) => {
+    const completeProgressBar = document.createElement("div");
+    completeProgressBar.className = "complete w-0";
+
+    domSelector.statusProgressContainer(id).appendChild(completeProgressBar);
+    // Trick to trigger the width transition
+    // Found solution at: https://stackoverflow.com/questions/24148403/trigger-css-transition-on-appended-element
+    completeProgressBar.offsetWidth;
+
+    domSelector.statusProgressContainer(id).children[1].classList.remove("w-0");
+    domSelector.statusProgressContainer(id).children[1].classList.add("w-full");
+    completeProgressBar.offsetWidth;
+
+    setTimeout(() => {
+        hideUploadStatusRow(id);
+    }, 3000);
+
+}
+
+const hideUploadStatusSectionIfNeeded = () => {
+    if(domSelector.uploadStatusList().children.length === 0)
+        domSelector.uploadStatusList().parentElement.classList.add("hidden");
+}
+
+const hideUploadStatusRow = (id) => {
+    domSelector.uploadStatusRow(id).style.maxHeight = "0px";
+    domSelector.uploadStatusRow(id).classList.remove("py-4");
+    domSelector.uploadStatusRow(id).classList.add("overflow-clip");
+    domSelector.uploadStatusRow(id).offsetHeight;
+
+    setTimeout(() => {
+        domSelector.uploadStatusRow(id).parentElement.removeChild(domSelector.uploadStatusRow(id));
+        hideUploadStatusSectionIfNeeded();
+    }, 800);
+}
+
+window.addCompleteStatus = addCompleteStatus;
+
 export {
     getTopic,
+    getFileSize,
     fileDeleteRequest,
     debounceTextDataInput,
     updateLastTimeComponent,
     registerUpdateLastTimeInterval,
     updateTimeDiff,
-    registerFileListEvents
+    registerFileListEvents,
+    registerFileInputEvents,
+    addUploadStatusRow,
+    addCompleteStatus
 }
