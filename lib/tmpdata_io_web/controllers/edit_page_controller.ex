@@ -11,7 +11,7 @@ defmodule TmpDataIOWeb.EditPageController do
   def index(conn, %{"page_id" => page_id}) do
     text_data =
       case PublicTextDAO.get_text_by_page_id(page_id, false) do
-        nil -> %TextData{page: page_id, content: ""}
+        nil -> %TextData{page: page_id, content: "", files: []}
         row -> row
       end
 
